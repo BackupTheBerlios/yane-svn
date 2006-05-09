@@ -1,5 +1,24 @@
 <?php
 	include('config.php');
+	
+	// Preprocessing POST-Data
+	if (isset($_POST['all-delete'])) {						// Alle gewählten sollen gelöscht werden => wurde auf Buzza geklickt
+		$mlink=sql_connect();
+		foreach ($_POST as $x=>$y) {
+			if (strcmp(@substr($x,0,4),'user')==0) {		// Checkbox markiert?
+				user_unset($y,array($lists[$_POST['list']]->name));
+//				$result=mysql_query('DELETE FROM `'.$mysql_table.'` WHERE `mailaddress` = \''.$y.'\' AND `'.$_POST['list'].'` = \'1\';') or
+//						die('There was a problem with the request "'.$sql.'".'."\n".'MySQL error: '.mysql_error());
+			}
+		}
+		mysql_close($mlink);
+	}
+	if (isset($_POST['delete'])) {
+		$mlink=sql_connect();
+		user_unset($_POST['delete'],array($lists[$_POST['list']]->name));
+		mysql_close($mlink);
+	}
+	
 	switch ($_GET['page']) {
 	
 		case '': {
@@ -101,6 +120,13 @@
 			</form>
 		</p>';
 			if (isset($_POST['subscribers']) && isset($_POST['list'])) {
+				/* Form:
+				 * subscribers => " OK "
+				 * list => $_POST['list']
+				 * user[EMAIL] => selected
+				 * delete => [EMAIL]
+				 * all-delete => "Gew&auml;hlte L&ouml;schen"
+				 */
 				echo '
 		<p>
 			<form method="post" enctype="multipart/form-data" name="dlsubscribers">
@@ -108,6 +134,7 @@
 				<input type="hidden" name="list" value="'.$_POST['list'].'" />
 				<table border="1">
 					<tr class="headline">
+						<td></td>
 						<td>E-Mail-Adresse</td>
 						<td>Name</td>
 						<td><span title="Fehlgeschlagene Login-Versuche seit letztem erfolgreichen Login">Anzahl Fehlversuche</span></td>
@@ -120,21 +147,30 @@
 				while ($entry=mysql_fetch_assoc($result)) {
 					echo '
 					<tr>';
+					$x=0; $y=0;
 					foreach ($entry as $col_value) {
+						if ($x==0) {
+							echo '<td style="border: 0px;"><input type="checkbox" name="user'.$y.'" value="'.$col_value.'" />';
+							$email=$col_value;
+						}
 						echo '
 						<td>'.$col_value.'</td>';
 						//$data[] = $col_value;
+						$x++;
 					}
 					echo '
-						<td>
-							<button type="submit" name="submit_mult" value="delete" title="L&ouml;schen">
-								<img src="./remove.png" title="Benutzer von Mailingliste l&ouml;schen" alt="L&ouml;schen" width="16" height="16" />
+						<td style="border: 0px;">
+							<button type="submit" name="delete" value="'.$email.'" title="'.$email.' von Mailingliste l&ouml;schen">
+								<img src="./remove.png" title="Benutzer von Mailingliste l&ouml;schen" alt="Benutzer von Mailingliste l&ouml;schen" width="16" height="16" />
 							</button>
 						</td>
 					</tr>';
+					$y++;
 				}
 				echo '
 				</table>
+				<input type="reset" name="reset" value="Reset" />
+				<input type="submit" name="all-delete" value="Gew&auml;hlte L&ouml;schen" />
 			</form>
 		</p>';
 			}

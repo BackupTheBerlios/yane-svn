@@ -58,7 +58,7 @@
 			$sql.=', \'';
 			$found=false;
 			foreach ($selected as $bla) {
-				if (strcmp($list->name,$bla->name)==0) {
+				if (strcmp($list->name,$bla)==0) {
 					$found=true;
 					break;
 				}
@@ -72,17 +72,35 @@
 	
 	/*ALTER TABLE `yane` ADD `bla` BOOL NOT NULL ;*/
 	
+	/* Entfernt einen Benutzer von der/den angegebenen Listen
+	 * @Param:
+	 * $address:	(String) 		- E-Mail-Adresse des zu bearbeitenden Users
+	 * $selected:	array((String))	- Namen der Listen, aus denen der Benutzer ausgetragen werden soll
+	 */
 	function user_unset($address,$selected) {
 		global $mysql_table;
+		echo '<br /><br />';
+		var_dump($selected);
+		echo '<br /><br />';
 		$sql='UPDATE `'.$mysql_table.'` SET ';
 		for ($x=0;$x<count($selected);$x++) {
-			$sql.='`'.$selected[$x]->name.'` = \'0\' ';
+			$sql.='`'.$selected[$x].'` = \'0\' ';
 			if (($x+1)<count($selected)) $sql.=', ';
 		}
 		$sql.='WHERE `mailaddress` = \''.$address.'\';';
-		echo $sql;
+		echo $sql.'<br />';
 		mysql_query($sql) or die('Could not set configuration.'."\n".'MySQL error: '.mysql_error()."\n".$sql);
-		remove_user($address);
+		$sql='SELECT * FROM `'.$mysql_table.'` WHERE `mailaddress` = \''.$address.'\';';
+		$result=mysql_query($sql) or die('Could not set configuration.'."\n".'MySQL error: '.mysql_error()."\n".$sql);
+		$row=mysql_fetch_assoc($result);
+		$subscriber=false;
+		foreach ($row as $subscribed) {
+			if ($subscribed) {
+				$subscriber=true;
+				break;
+			}
+		}
+		if (!$subscriber) remove_user($address);
 	}
 
 	function remove_user($address) {

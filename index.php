@@ -20,7 +20,7 @@
 		if (strlen($_POST['pwd1'])>200) die('<i>Das Passwort muss k&uuml;rzer als 200 Zeichen sein um den Server nicht unn&ouml;tig (kann sich doch niemand merken) zu belasten.</i>');
 		$selected=array();
 		foreach ($lists as $list) {
-			if (isset($_POST[$list->name])) array_push($selected,$list);
+			if (isset($_POST[$list->name])) array_push($selected,$list->name);
 		}
 		if (count($selected)==0) die('<i>Bitte w&auml;hlen Sie mindestens eine Liste aus.</i>');
 		
@@ -43,17 +43,16 @@
 		// Prüfen ob Benutzer-Adresse in DB vorhanden ist
 		$mlink=sql_connect();
 		$sql='SELECT * FROM `'. $mysql_table .'` WHERE `mailaddress` = \''. $_POST['address'] .'\'';
-		$result=mysql_query($sql,$mlink);
-		if ($result===false) die('There was a problem with the request "'.$sql.'".'."\n".'MySQL error: '.mysql_error());
+		$result=mysql_query($sql,$mlink) or die('There was a problem with the request "'.$sql.'".'."\n".'MySQL error: '.mysql_error());
 		
 		switch ($_POST['action']) {
 			case 'subscribe': {
-				if (mysql_fetch_array($result)) die('<i>Die angegebene E-Mail-Adresse ist bereits registriert.</i>');
+				//if (mysql_fetch_array($result)) die('<i>Die angegebene E-Mail-Adresse ist bereits registriert.</i>');
 				insert_user($_POST['address'],(strlen($_POST['name'])>0)?($_POST['name']):(''),$pwd1,$selected);
 				break;
 			}
 			case 'unsubscribe': {
-				if (!mysql_fetch_array($result)) die('<i>Die angegebene E-Mail-Adresse ist nicht registriert.</i>');
+				//if (!mysql_fetch_array($result)) die('<i>Die angegebene E-Mail-Adresse ist nicht registriert.</i>');
 				user_unset($_POST['address'],$selected);
 				break;
 			}
@@ -92,7 +91,6 @@
 			</table>
 		</form>';
 	}
-	
 	echo '
 	</body>
 </html>';
