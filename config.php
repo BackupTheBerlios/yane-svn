@@ -2,8 +2,8 @@
 
 	$project='Yane';
 	
-	$mysql_user='root';
-	$mysql_password='jtu3krv';
+	$mysql_user='';
+	$mysql_password='';
 	$mysql_server='localhost';
 	$mysql_database='test';
 	$mysql_table='yane';
@@ -27,6 +27,7 @@
 		}
 	}
 	
+	// initial lists-fetch
 	$mlink=sql_connect();
 	$result = mysql_query('SHOW COLUMNS FROM `'.$mysql_table.'`');
 	if (!$result) die('Could not run query: ' . mysql_error());
@@ -110,10 +111,10 @@
 			   echo 'Error creating database: ' . mysql_error() . "\n";
 			}
 			
-			if (!$success) die('Could not switch to specifed database.'."\n".'MySWL error: '.mysql_error());
+			if (!$success) die('Could not switch to specifed database.'."\n".'MySQL error: '.mysql_error());
 			$success=mysql_select_db($mysql_database);
 			
-			if (!$success) die('Could not switch to specifed database.'."\n".'MySWL error: '.mysql_error());
+			if (!$success) die('Could not switch to specifed database.'."\n".'MySQL error: '.mysql_error());
 		}
 		
 		return $mlink;

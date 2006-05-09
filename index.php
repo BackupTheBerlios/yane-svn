@@ -14,11 +14,10 @@
 	
 	if (isset($_POST['submit'])) {
 		// Prüfen, ob alle Angaben korrekt sind
+		if ((strpos($_POST['address'],'@')===false) or (strpos($_POST['address'],'.')===false)) die('<i>Bitte geben Sie Ihre korrekte E-Mail-Adresse an.</i>');
 		if (strcmp($_POST['pwd1'],$_POST['pwd2'])!=0) die('<i>Die Passw&ouml;rter stimmen nicht &uuml;berein.</i>');
 		if (strlen($_POST['pwd1'])<6) die('<i>Das Passwort muss l&auml;nger als 6 Zeichen sein.</i>');
 		if (strlen($_POST['pwd1'])>200) die('<i>Das Passwort muss k&uuml;rzer als 200 Zeichen sein um den Server nicht unn&ouml;tig (kann sich doch niemand merken) zu belasten.</i>');
-		if ((strlen($_POST['address'])=='') or (strpos($_POST['address'],'@')===false) or (strpos($_POST['address'],'.')===false))
-			die('<i>Bitte geben Sie Ihre korrekte E-Mail-Adresse an.</i>');
 		$selected=array();
 		foreach ($lists as $list) {
 			if (isset($_POST[$list->name])) array_push($selected,$list);
@@ -44,7 +43,7 @@
 		// Prüfen ob Benutzer-Adresse in DB vorhanden ist
 		$mlink=sql_connect();
 		$sql='SELECT * FROM `'. $mysql_table .'` WHERE `mailaddress` = \''. $_POST['address'] .'\'';
-		$result=mysql_query($sql);
+		$result=mysql_query($sql,$mlink);
 		if ($result===false) die('There was a problem with the request "'.$sql.'".'."\n".'MySQL error: '.mysql_error());
 		
 		switch ($_POST['action']) {
