@@ -2,7 +2,7 @@
 	include('config.php');
 	
 	// Preprocessing POST-Data
-	if (isset($_POST['all-delete'])) {						// Alle gewählten sollen gelöscht werden => wurde auf Buzza geklickt
+	if (isset($_POST['all-delete'])) {						// Alle gewï¿½lten sollen gelï¿½cht werden => wurde auf Buzza geklickt
 		$mlink=sql_connect();
 		foreach ($_POST as $x=>$y) {
 			if (strcmp(@substr($x,0,4),'user')==0) {		// Checkbox markiert?
@@ -56,7 +56,7 @@
 				echo 'id="'. $x .'" /><label for="'. $x .'"> '. $lists[$x]->name .'</label>';
 				if ($x-1<$count) echo '<br />';
 			}
-					echo '
+			echo '
 					</td>
 				</tr>
 				<tr>
@@ -73,7 +73,7 @@
 		
 ///////////////////////////////////////////////////////////////////////////////////// SETTINGS ///////////////////////////////////////////////
 		
-		case 'settings': {
+		case ('' || 'settings'): {
 			echo '
 <html>
 	<head>
@@ -161,7 +161,7 @@
 					echo '
 						<td style="border: 0px;">
 							<button type="submit" name="delete" value="'.$email.'" title="'.$email.' von Mailingliste l&ouml;schen">
-								<img src="./remove.png" title="Benutzer von Mailingliste l&ouml;schen" alt="Benutzer von Mailingliste l&ouml;schen" width="16" height="16" />
+								<img src="./remove.png" title="'.$email.' von Mailingliste l&ouml;schen" alt="Benutzer von Mailingliste l&ouml;schen" width="16" height="16" />
 							</button>
 						</td>
 					</tr>';

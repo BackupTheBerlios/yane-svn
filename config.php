@@ -8,6 +8,10 @@
 	$mysql_database='test';
 	$mysql_table='yane';
 	
+	$absender='';
+	
+	$bulk_send=10;
+	
 	$lists=array();
 	
 	class subscriber {
