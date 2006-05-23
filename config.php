@@ -1,3 +1,4 @@
+
 <?php
 
 	$project='Yane';
@@ -140,24 +141,6 @@
 		}
 		
 		return $mlink;
-	}
-	
-	function create_table() {
-		global $mysql_table;
-		
-		$mlink=sql_connect();
-		$sql=	'CREATE TABLE `'. $mysql_table .'` ('
-				.' `mailaddress` TEXT NOT NULL, '
-				.' `name` TEXT NOT NULL, '
-				.' `password` TEXT NOT NULL, '
-				.' `lastlogin` INT NOT NULL, '
-				.' `lastfailedlogin` DATETIME NOT NULL, '
-				.' `failedlogins` INT NOT NULL'
-				.' )'
-				.' TYPE = myisam'
-				.' COMMENT=\'The Yane UserDB\';';
-		mysql_query($sql) or die('Could not create specified table.'."\n".'MySQL error: '.mysql_error());
-		mysql_close($mlink);
 	}
 
 ?>

@@ -34,7 +34,7 @@
 		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
-		<form method="post" enctype="mulipart/form-data" action="send.php">
+		<form method="post" enctype="mulipart/form-data" action="send.php?debug=1">
 			<table border="0">
 				<tr>
 					<td><label for="subject">Betreff:</label></td>
@@ -50,7 +50,7 @@
 			$count=count($lists);
 			for ($x=0;$x<$count;$x++) {
 				echo '
-						<input type="checkbox" name="'. $lists[$x]->name .'" ';	
+						<input type="checkbox" name="list'. $lists[$x]->name .'" ';	
 //				if ((strlen($_GET['lists'])) && (((int)$_GET['lists']) & ($x+1))) echo 'checked ';
 				if (isset($_POST[$lists[$x]->name])) echo 'checked ';
 				echo 'id="'. $x .'" /><label for="'. $x .'"> '. $lists[$x]->name .'</label>';
@@ -63,7 +63,7 @@
 					<td colspan="2" style="text-align: center;"><input type="submit" name="send" value="Mails versenden" /></td>
 				</tr>
 			</table>
-			<input type="hidden" name="jobbegin" value="<?echo time();?>" />
+			<input type="hidden" name="jobbegin" value="'.time().'" />
 			<input type="hidden" name="ip" value="'.getenv('REMOTE_ADDR').'" />
 		</form>
 	</body>
