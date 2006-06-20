@@ -27,4 +27,16 @@
     echo("Powered by <a href='http://developer.berlios.de/projects/yane/'>Yane</a> Ver. 0.4");
     }
     
+    #Generates a new activation key, writes it to the DB and returns the key
+    function generate_activation_key($mailaddress)
+    {
+    $link = open_db();
+    $token = md5(uniqid(rand(), true));
+    $sql="UPDATE User SET activation_key = '$token' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
+    mysql_query($sql) or die('Activation_key save failed: ' . mysql_error());
+    mysql_close($link);
+    return $token;
+    }
+    
+    
 ?>

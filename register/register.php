@@ -30,7 +30,25 @@
     mysql_close($link);
     die();
     } else {
-    #TO-DO: If registered, but not activated send new key
+        #If registered, but not activated --> Send new key
+        $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailadresse' AND activation_key IS NOT NULL;") OR die(mysql_error());
+        if(mysql_num_rows($result) == 1) {
+        $token = generate_activation_key($mailadresse);
+        #Resend confirmation mail to user
+    $subject = 'Please activate your account';
+    $message = "You registered this email-address on the YaCy newsletter system.\n\nYou must activate your account, before you can use it.\nTo do so, visit http://newsletters.yacy-forum.de/activate and enter the confirmation code there.\n\nRegistered email-address: $mailadresse\nConfirmation website: http://newsletters.yacy-forum.de/activate\nConfirmation code: $token\n\nIf someone else registered your address on our system, delete this email and you won't get any mail from us in the future.\n\nRegards,\nthe YaCy newsletter team";
+    $headers = 'From: do-not-reply@newsletters.yacy-forum.de' . "\r\n";
+    
+    if (!mail($mailadresse, $subject, $message, $headers))
+    #Error-/Informationpage if mail couldn't be handed to MTA of the server
+    die ("We had an unexpected error during queuing mails. Please note the following information and enter it manually at http://newsletters.yacy-forum.de/activation : 
+    Registered email-address: $mailadresse
+    Registrant's IP: $ip
+    Confirmation website: http://newsletters.yacy-forum.de/activation
+    Confirmation code: $token");
+    
+        die();
+    }
     }
 
     #If user doesn't exist:
@@ -89,8 +107,7 @@
     
     #activation_key
     #---------------------------------------------------------------------
-    $token = md5(uniqid(rand(), true));
-    $sql_activation_key="UPDATE User SET activation_key = '$token' WHERE CONVERT( email_address USING utf8 ) = '$mailadresse'";
+    generate_activation_key($mailadresse);
     #---------------------------------------------------------------------
 
     #Write everything
@@ -101,14 +118,13 @@
     mysql_query($sql_last_login) or die('Last_login save failed: ' . mysql_error());
     mysql_query($sql_last_login_ip) or die('IP save failed: ' . mysql_error());
     mysql_query($sql_login_failures) or die('Login_failures save failed: ' . mysql_error());
-    mysql_query($sql_activation_key) or die('Activation_key save failed: ' . mysql_error());
     mysql_close($link);
     
     #If we didn't die() up to now, everything was successful
     
     #Send confirmation mail to user
     $subject = 'Please activate your account';
-    $message = "You registered this email-address on the YaCy newsletter system.\n\nYou must activate your account, before you can use it.\nTo do so, visit http://newsletters.yacy-forum.de/activate and enter the confirmation code there.\n\nRegistered email-address: $mailadresse\nRegistrant's IP: $ip\nConfirmation website: http://newsletters.yacy-forum.de/activate\nConfirmation code: $token\n\nIf someone else registed your address on our system, delete this email and you won't get any mail from us.\n\nRegards,\nthe YaCy newsletter team";
+    $message = "You registered this email-address on the YaCy newsletter system.\n\nYou must activate your account, before you can use it.\nTo do so, visit http://newsletters.yacy-forum.de/activate and enter the confirmation code there.\n\nRegistered email-address: $mailadresse\nRegistrant's IP: $ip\nConfirmation website: http://newsletters.yacy-forum.de/activate\nConfirmation code: $token\n\nIf someone else registered your address on our system, delete this email and you won't get any mail from us in the future.\n\nRegards,\nthe YaCy newsletter team";
     $headers = 'From: do-not-reply@newsletters.yacy-forum.de' . "\r\n";
     
     if (!mail($mailadresse, $subject, $message, $headers))
