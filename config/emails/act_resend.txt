@@ -1,0 +1,15 @@
+Please activate your account
+You registered this email-address on the YaCy newsletter system.
+
+You must activate your account, before you can use it.
+To do so, visit %1% and enter the confirmation code there.
+
+Registered email-address: %2%
+Registrant's IP: %3%
+Confirmation website: %1%
+Confirmation code: %4%
+
+If someone else registered your address on our system, delete this email and you won't get any mail from us in the future.
+
+Regards,
+the YaCy newsletter team
