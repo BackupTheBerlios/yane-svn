@@ -16,16 +16,16 @@
     
     #-------------------------------------------------------------------------
     
-    $mailadresse=$_POST['mailaddress'];
+    $mailaddress=$_POST['mailaddress'];
     
-    $mailadresse=trim($mailadresse);
+    $mailaddress=trim($mailaddress);
     
     #Get the password
     $password=$_POST['password'];
     $password=md5($password);
     
     #Save email-address and password
-    echo("<INPUT TYPE='HIDDEN' NAME='mailaddress' VALUE='$mailadresse'>");
+    echo("<INPUT TYPE='HIDDEN' NAME='mailaddress' VALUE='$mailaddress'>");
     echo("<INPUT TYPE='HIDDEN' NAME='password' VALUE='$password'>");
     
     #-------------------------------------------------------------------------
@@ -38,7 +38,7 @@
     #Which lists are selected?
     
     #security list?
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailadresse' AND security_list = 1 AND md5_password = '$password';");
+    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND security_list = 1 AND md5_password = '$password';");
     if(mysql_num_rows($result) > 0) {
         $seclist = true;
     } else {
@@ -46,7 +46,7 @@
     }
     
     #announce list?
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailadresse' AND announce_list = 1 AND md5_password = '$password';");
+    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND announce_list = 1 AND md5_password = '$password';");
     if(mysql_num_rows($result) > 0) {
         $ann_list = true;
     } else {
@@ -54,7 +54,7 @@
     }
     
     # newsletter list?
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailadresse' AND newsletter_list = 1 AND md5_password = '$password';");
+    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND newsletter_list = 1 AND md5_password = '$password';");
     if(mysql_num_rows($result) > 0) {
         $nl_list = true;
     } else {

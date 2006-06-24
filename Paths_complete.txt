@@ -1,0 +1,5 @@
+Contains a list of directories which are fuly functional and can be designed in HTML part.
+
+register
+activate
+manage\subscriptions

@@ -5,13 +5,14 @@
     #-------------------------------------------------------------------------
     
     #Get mail
-    $mailadresse=$_POST['mailaddress'];
+    $mailaddress=$_POST['mailaddress'];
     
-    $mailadresse=trim($mailadresse);
+    $mailaddress=trim($mailaddress);
     
     #Check email-address for @ and spam-attacks
-    if (!preg_match("/^[\w.+-]{1,64}\@[\w.-]{1,255}\.[a-z]{2,6}$/",$mailadresse)){ 
-           die($mailaddresse);
+    if (!validate_email($mailaddress)){ 
+    header("Location: email_or_pw_wrong.html");
+    die();
     }
     
     #Get the MD5-password out of the hidden input
@@ -54,7 +55,7 @@
     #-------------------------------------------------------------------------
     
     #Save the new modification time
-    log_change($mailadresse, $password);
+    log_change($mailadresse);
     
     #-------------------------------------------------------------------------
     
