@@ -3,5 +3,3 @@ Contains a list of directories which are fuly functional and can be designed in 
 register
 activate
 manage\subscriptions
-
-test
