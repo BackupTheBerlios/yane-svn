@@ -48,7 +48,7 @@
     #Sends a mail-template to the given address. $topic must be name of template.
     function send_mail($mailaddress, $topic, $a="", $b="", $c="", $d="")
     {
-    $fp = fopen("../config/emails/$topic" . ".txt",'r');
+    $fp = fopen(ROOTDIR . "config/emails/$topic" . ".txt",'r');
     if ($fp)
     {
     $subject = fgets($fp);
