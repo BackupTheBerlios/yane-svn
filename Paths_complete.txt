@@ -1,5 +1,7 @@
-Contains a list of directories which are fuly functional and can be designed in HTML part.
+Contains a list of directories which are fully functional and can be designed in HTML part.
 
 register
 activate
 manage\subscriptions
+manage\forgot_pwd
+generic_errors

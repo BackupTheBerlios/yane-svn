@@ -1,10 +1,10 @@
 <html>
     <head>
-        <title>YaCy newsletter subscriptions</title>
+        <title>Newsletter subscriptions</title>
     </head>
     <body>
         <center>
-            <h2>YaCy newsletter subscriptions</h2>
+            <h2>Newsletter subscriptions</h2>
             <br />
             <br />
             <br />

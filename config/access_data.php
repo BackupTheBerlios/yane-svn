@@ -7,4 +7,5 @@
     define('MYSQL_PASS',     'enterhere');
     define('MYSQL_DATABASE', 'enterhere');
     define('DUMP_PW', 'enterhere');
+    define('ROOTDIR', '/home/www/newsletters/');
 ?>
