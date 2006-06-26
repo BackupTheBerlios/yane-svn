@@ -10,18 +10,29 @@
     
     #-------------------------------------------------------------------------------------------------------------------------
     
-    #Initialize some common variables
+    #check if the passwords match
+    $plain_pw1=$_POST['password1'];
+    $plain_pw2=$_POST['password1'];
+    
+    if (!(password1==password2)) {
+    header("Location: pws_dont_match.html");
+    die();
+    }
+    
+    #-------------------------------------------------------------------------------------------------------------------------
     
     #get email-address from POST
-    $mailadresse=$_POST['mailaddress'];
+    $mailaddress=$_POST['mailaddress'];
     
-    $mailadresse=trim($mailadresse);
+    $mailaddress=trim($mailaddress);
     
     #Check email-address for @ and spam-attacks
-    if (!validate_email($mailadresse)){ 
+    if (!validate_email($mailaddress)){ 
     header("Location: email_wrong.html");
     die();
     }
+    
+    #-------------------------------------------------------------------------------------------------------------------------
     
     #Get the user's IP
     $ip=$_SERVER['REMOTE_ADDR'];
@@ -32,18 +43,18 @@
     $link = open_db();
 
     #Check if the user already has registered
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailadresse' AND activation_key IS NULL;") OR die(mysql_error());
+    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND activation_key IS NULL;") OR die(mysql_error());
     if(mysql_num_rows($result) == 1) {
     header("Location: user_exists.html");
     mysql_close($link);
     die();
     } else {
         #If registered, but not activated --> Send new key
-        $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailadresse' AND activation_key IS NOT NULL;") OR die(mysql_error());
+        $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND activation_key IS NOT NULL;") OR die(mysql_error());
         if(mysql_num_rows($result) == 1) {
-        $token = generate_activation_key($mailadresse);
+        $token = generate_activation_key($mailaddress);
         #Resend confirmation mail to user
-        send_mail($mailadresse, "act_resend", "http://newsletters.yacy-forum.de/activate", $mailadresse, $ip, $token);
+        send_mail($mailaddress, "act_resend", "http://newsletters.yacy-forum.de/activate", $mailaddress, $ip, $token);
         #Show success
         header("Location: user_exists_act_resend.html");
         die();
@@ -65,34 +76,33 @@
     
     #Add new user
     #-------------------------------------------------------------------------------------------------------------------------    
-    add_user($mailadresse);
+    add_user($mailaddress);
     #-------------------------------------------------------------------------------------------------------------------------
     
     #Set password
     #-------------------------------------------------------------------------------------------------------------------------
-    $plain_pw=$_POST['password'];
-    update_PW($mailadresse, $plain_pw);
+    update_PW($mailaddress, $plain_pw1);
     #-------------------------------------------------------------------------------------------------------------------------
     
     #Log time of last modification  on dataset
     #-------------------------------------------------------------------------------------------------------------------------
-    log_change($mailadresse);
+    log_change($mailaddress);
     #-------------------------------------------------------------------------------------------------------------------------
     
     #Initialize the login values
     #-------------------------------------------------------------------------------------------------------------------------
-    log_correct_login($mailadresse, $ip);
+    log_correct_login($mailaddress, $ip);
     #-------------------------------------------------------------------------------------------------------------------------
     
     #Generate and save activation key
     #-------------------------------------------------------------------------------------------------------------------------
-    $token = generate_activation_key($mailadresse);
+    $token = generate_activation_key($mailaddress);
     #-------------------------------------------------------------------------------------------------------------------------
 
     #If we didn't die() up to now, everything was successful
     
     #Send confirmation mail to user
-    send_mail($mailadresse, "register", "http://newsletters.yacy-forum.de/activate", $mailadresse, $ip, $token);
+    send_mail($mailadresse, "register", "http://newsletters.yacy-forum.de/activate", $mailaddress, $ip, $token);
     
     #Show success
     header("Location: success.html");
