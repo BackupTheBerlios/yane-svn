@@ -46,7 +46,7 @@
     #-------------------------------------------------------------------------------------------------------------------------
     
     #Sends a mail-template to the given address. $topic must be name of template.
-    function send_mail($mailaddress, $topic, $a="", $b="", $c="", $d="")
+    function send_mail($mailaddress, $topic, $a="", $b="", $c="", $d="", $e="", $f="")
     {
     $fp = fopen(ROOTDIR . "config/emails/$topic" . ".txt",'r');
     if ($fp)
@@ -77,7 +77,13 @@
     if (!$d=="") {
     $message = str_replace("%4%", $d, $message);
     }
-    
+    if (!$e=="") {
+    $message = str_replace("%5%", $d, $message);
+    }
+    if (!$f=="") {
+    $message = str_replace("%6%", $d, $message);
+    }
+    #Send the mail or, in case of error, print it.
     if (!mail($mailaddress, $subject, $message, "From: $sender\r\n"))
     die("Error queuing mail. Here the content: $message");
     
