@@ -10,6 +10,7 @@
 
     .navigation {
     width:100%;
+	text-align: center;
   }
     td { 
     border:0px
@@ -20,14 +21,12 @@
  }
 
     td a { 
-    text-align: center;
     color: #000000;
     text-decoration: none;
-    text-align: center;
+    
  }
 
     td a:hover { 
-    text-align: center;
     color: #ffffff;
  }
 
