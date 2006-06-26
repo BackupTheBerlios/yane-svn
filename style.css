@@ -1,0 +1,35 @@
+
+
+    p#Fusszeile {
+    clear: both;
+    font-size: 0.9em;
+    margin: 0; padding: 0.1em;
+    text-align: center;
+    background-color: #bbcccc;
+  }
+
+    .navigation {
+    width:100%;
+  }
+    td { 
+    border:0px
+    overflow:hidden;
+    text-decoration: none; font-weight: bold;
+    
+    
+ }
+
+    td a { 
+    text-align: center;
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+ }
+
+    td a:hover { 
+    text-align: center;
+    color: #ffffff;
+ }
+
+.blue   {background-color:#bbcccc; }
+.white   {background-color:#ffffff; }

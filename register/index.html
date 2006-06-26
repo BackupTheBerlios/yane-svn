@@ -5,18 +5,31 @@
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
 <title>YaCy newsletter management</title>
 </head>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</link>
 <body>
-<a href="../register/index.html">Register a new account</a> | <a href="../manage/index.html">Manage your account</a>
-<small><?php include 'functions.php'; show_version();?></small><br />
-<hr noshade="noshade" />
-<center><h2>YaCy newsletter Registration</h2></center>
+<table class="navigation">
+ <tr>
+  <td style="width:70px"rowspan="2" class="white"><img src="../yacy.png" /></td>
+  <td style="width:200px" class="blue"><a href="../register/index.html">Register a new account</td>
+  <td style="width:200px" class="blue"><a href="../manage/index.html">Manage your account</a></td>
+  <td class="blue"></td>
+ </tr>
+ <tr><td style="height:20px" class="white"></td></tr>
+</table>
 <br><br><br>
 <center>
 
 <form method="POST" action="register.php">
-		<input name="mailaddress" type="text" size="30" maxlength="255" value="Your email-address" onfocus="this.select()">&emsp;
-		<input name="password" type="text" size="30" maxlength="255" value="PW" onfocus="this.select()">&emsp;
-		<input type="submit" name="subscribe" value="Subscribe">
+<table>
+	<tr>
+		<td>Your email adress</td><td><input name="mailaddress" type="text" size="30" maxlength="255" value="Your email-address" onfocus="this.select()">&emsp;</td></tr>
+	<tr>
+		<td>Your password</td><td><input name="password" type="text" size="30" maxlength="255" value="PW" onfocus="this.select()">&emsp;</td></tr>
+	<tr>
+		<td>repeat password</td><td><input name="password" type="text" size="30" maxlength="255" value="PW" onfocus="this.select()">&emsp;</td></tr>
+	<tr>
+		<td></td><td><input type="submit" name="subscribe" value="Subscribe"></td></tr>
 </form>
 </body>
 </html>
