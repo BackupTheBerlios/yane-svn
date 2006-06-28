@@ -26,21 +26,9 @@
     {
       $new_plainpw .= $pattern{rand(0,61)};
     }
-  
-    $new_md5pw=md5($new_plainpw);
     
-    #Open MySQL-DB
-    $link = open_db();
-    
-    #To-DO: Check if user activated his account already
-    
-    #Save new random password
-    $sql="UPDATE User SET md5_password = '$new_md5pw' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
-
-    mysql_query($sql) OR die(mysql_error());
-    
-    #close DB
-    mysql_close($link);
+    #Save new password
+    update_pw($mailaddress, $new_plainpw);
     
     #Send mail to user
     send_mail($mailaddress, "resend_password", $new_plainpw);

@@ -12,7 +12,7 @@
     
     #check if the passwords match
     $plain_pw1=$_POST['password1'];
-    $plain_pw2=$_POST['password1'];
+    $plain_pw2=$_POST['password2'];
     
     if (!(password1==password2)) {
     header("Location: pws_dont_match.html");
@@ -27,7 +27,7 @@
     $mailaddress=trim($mailaddress);
     
     #Check email-address for @ and spam-attacks
-    if (!validate_email($mailaddress)){ 
+    if (!validate_email($mailaddress)) {
     header("Location: email_wrong.html");
     die();
     }
@@ -60,7 +60,7 @@
         die();
     }
     }
-
+    
     #If user doesn't exist:
     #Create new user in database:
     # email_address   varchar(255)  	

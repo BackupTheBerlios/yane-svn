@@ -7,8 +7,8 @@
     
     function open_db()
     {
-    $handler = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS) OR die("Couldn't establish connection to database. Error: ".mysql_error());
-    mysql_select_db(MYSQL_DATABASE) OR die("Couldn't use database. Error: ".mysql_error());
+    $handler = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS) OR die("Couldn't establish connection to database. Error: " . mysql_error());
+    mysql_select_db(MYSQL_DATABASE) OR die("Couldn't use database. Error: " . mysql_error());
     return $handler;
     }
     
@@ -19,7 +19,7 @@
     $link = open_db();
     $time=date('Y-m-d H:i:s');
     $sql="UPDATE User SET last_change = '$time' WHERE CONVERT( email_address USING utf8 ) = '$mailadresse'";
-    mysql_query($sql);
+    mysql_query($sql) OR die("Couldn't log change. Error: " . mysql_error());
     mysql_close($link);
     }
     
@@ -38,7 +38,7 @@
     $link = open_db();
     $token = md5(uniqid(rand(), true));
     $sql="UPDATE User SET activation_key = '$token' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
-    mysql_query($sql) or die('Activation_key save failed: ' . mysql_error());
+    mysql_query($sql) OR die('Activation key save failed: ' . mysql_error());
     mysql_close($link);
     return $token;
     }
@@ -64,7 +64,7 @@
        die("Unkown email-template: $topic");
        
     $sender = EMAIL_SENDER;
-
+    
     if (!$a=="") {
     $message = str_replace("%1%", $a, $message);
     }
@@ -109,7 +109,7 @@
     function add_user($mailaddress){
     $link=open_db();
     $sql="INSERT INTO User (email_address ) VALUE ('$mailaddress')";
-    mysql_query($sql);
+    mysql_query($sql) OR die("Couldn't add new user to database. Error: " . mysql_error());
     mysql_close($link);
     }
     
@@ -120,7 +120,7 @@
     $pw_md5 = md5($plain_pw);
     $link=open_db();
     $sql="UPDATE User SET md5_password = '$pw_md5' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
-    mysql_query($sql);
+    mysql_query($sql) OR die("Couldn't update password. Error: " . mysql_error());
     mysql_close($link);
     }
     
@@ -130,12 +130,12 @@
     function log_correct_login($mailaddress, $ip){
     $link=open_db();
     $sql="UPDATE User SET last_login_ip = '$ip' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
-    mysql_query($sql);
+    mysql_query($sql) OR die("Couldn't save last login IP. Error: " . mysql_error());
     $sql="UPDATE User SET login_failures = '0' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
-    mysql_query($sql);
+    mysql_query($sql) OR die("Couldn't reset login failures. Error: " . mysql_error());
     $time=date('Y-m-d H:i:s');
     $sql="UPDATE User SET last_login = '$time' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
-    mysql_query($sql);
+    mysql_query($sql) OR die("Couldn't update login timestamp. Error: " . mysql_error());
     mysql_close($link);
     }
     
