@@ -62,17 +62,6 @@
     }
     
     #If user doesn't exist:
-    #Create new user in database:
-    # email_address   varchar(255)  	
-    # md5_password   varchar(32)
-    # security_list   	tinyint(1) 
-	# announce_list  	tinyint(1)	  	
-	# newsletter_list  tinyint(1) 
-	# last_change  datetime
-	# last_login  datetime 
-	# last_login_ip  varchar(16) 
-	# login_failures  int(11) 
-	# activation_key  varchar(12)  
     
     #Add new user
     #-------------------------------------------------------------------------------------------------------------------------    
