@@ -2,26 +2,10 @@
 
     include '../functions.php';
     
-    #To create a new user we have to do the following:
-    #Check, if this address is already registered
-    #If yes, look if activation suceeded.
-    #If yes, die.
-    #If no, resend the activation code
-    
+ 
     #-------------------------------------------------------------------------------------------------------------------------
     
-    #check if the passwords match
-    $plain_pw1=$_POST['password1'];
-    $plain_pw2=$_POST['password2'];
-    
-    if (!(password1==password2)) {
-    header("Location: pws_dont_match.html");
-    die();
-    }
-    
-    #-------------------------------------------------------------------------------------------------------------------------
-    
-    #get email-address from POST
+	#get email-address from POST
     $mailaddress=$_POST['mailaddress'];
     
     $mailaddress=trim($mailaddress);
@@ -31,26 +15,22 @@
     header("Location: email_wrong.html");
     die();
     }
-    
-    #-------------------------------------------------------------------------------------------------------------------------
-    
-    #Get the user's IP
-    $ip=$_SERVER['REMOTE_ADDR'];
-    
-    #-------------------------------------------------------------------------------------------------------------------------
-    
-    #Open MySQL-DB
+	
+	#-------------------------------------------------------------------------------------------------------------------------
+	
+	#Open MySQL-DB
     $link = open_db();
 
     #Check if the user already has registered
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND activation_key IS NULL;") OR die(mysql_error());
-    if(mysql_num_rows($result) == 1) {
+    $result = mysql_query("SELECT * FROM Yane WHERE email_address = '$mailaddress' AND activation_key IS NULL;") OR die(mysql_error());
+    # User exists and is activated
+	if(mysql_num_rows($result) == 1) {
     header("Location: user_exists.html");
     mysql_close($link);
     die();
     } else {
-        #If registered, but not activated --> Send new key
-        $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND activation_key IS NOT NULL;") OR die(mysql_error());
+        # User exists, but is not activated --> Send new key
+        $result = mysql_query("SELECT * FROM Yane WHERE email_address = '$mailaddress' AND activation_key IS NOT NULL;") OR die(mysql_error());
         if(mysql_num_rows($result) == 1) {
         $token = generate_activation_key($mailaddress);
         #Resend confirmation mail to user
@@ -60,7 +40,20 @@
         die();
     }
     }
+	
+	#-------------------------------------------------------------------------------------------------------------------------
+	
+    # Check if the passwords match
+    $plain_pw1=$_POST['password1'];
+    $plain_pw2=$_POST['password2'];
     
+    if (!($plain_pw1==$plain_pw2)) {
+    header("Location: pws_dont_match.html");
+    die();
+    }
+    
+	#-------------------------------------------------------------------------------------------------------------------------
+	
     #If user doesn't exist:
     
     #Add new user
@@ -80,6 +73,8 @@
     
     #Initialize the login values
     #-------------------------------------------------------------------------------------------------------------------------
+	#Get the user's IP
+    $ip=$_SERVER['REMOTE_ADDR'];
     log_correct_login($mailaddress, $ip);
     #-------------------------------------------------------------------------------------------------------------------------
     
@@ -91,8 +86,10 @@
     #If we didn't die() up to now, everything was successful
     
     #Send confirmation mail to user
-    send_mail($mailadresse, "register", "http://newsletters.yacy-forum.de/activate", $mailaddress, $ip, $token);
+    #send_mail($mailadresse, "register", "http://newsletters.yacy-forum.de/activate", $mailaddress, $ip, $token);
     
+	#-------------------------------------------------------------------------------------------------------------------------
+	
     #Show success
     header("Location: success.html");
     

@@ -45,7 +45,7 @@
     $link = open_db();
     
     #Save new subscription settings everything
-    $sql="UPDATE User SET security_list = '$security', newsletter_list = '$news', announce_list = '$release' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress' AND CONVERT( md5_password USING utf8 ) = '$password'";
+    $sql="UPDATE Yane SET security_list = '$security', newsletter_list = '$news', announce_list = '$release' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress' AND CONVERT( md5_password USING utf8 ) = '$password'";
 
     mysql_query($sql) OR die(mysql_error());
     

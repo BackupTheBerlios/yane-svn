@@ -1,7 +1,7 @@
 <?php
 
-    include 'config/listdata.php';
-    include 'config/access_data.php';
+    require 'config/listdata.php';
+    require 'config/access_data.php';
     
     #-------------------------------------------------------------------------------------------------------------------------
     
@@ -18,7 +18,7 @@
     {
     $link = open_db();
     $time=date('Y-m-d H:i:s');
-    $sql="UPDATE User SET last_change = '$time' WHERE CONVERT( email_address USING utf8 ) = '$mailadresse'";
+    $sql="UPDATE Yane SET last_change = '$time' WHERE CONVERT( email_address USING utf8 ) = '$mailadresse'";
     mysql_query($sql) OR die("Couldn't log change. Error: " . mysql_error());
     mysql_close($link);
     }
@@ -27,7 +27,7 @@
     
     function show_version()
     {
-    echo("Powered by <a href='http://developer.berlios.de/projects/yane/'>Yane</a> Ver. 0.5");
+    echo("Powered by <a href='http://developer.berlios.de/projects/yane/'>Yane</a> Ver. 0.5.1");
     }
     
     #-------------------------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@
     {
     $link = open_db();
     $token = md5(uniqid(rand(), true));
-    $sql="UPDATE User SET activation_key = '$token' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
+    $sql="UPDATE Yane SET activation_key = '$token' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
     mysql_query($sql) OR die('Activation key save failed: ' . mysql_error());
     mysql_close($link);
     return $token;
@@ -65,6 +65,7 @@
        
     $sender = EMAIL_SENDER;
     
+    $message = str_replace("%base_url%", EXTERNAL_ADDRESS, $message);	
     if (!$a=="") {
     $message = str_replace("%1%", $a, $message);
     }
@@ -83,9 +84,9 @@
     if (!$f=="") {
     $message = str_replace("%6%", $d, $message);
     }
-    #Send the mail or, in case of error, print it.
+    #Send the mail, or, in case of error, print it.
     if (!mail($mailaddress, $subject, $message, "From: $sender\r\n"))
-    die("Error queuing mail. Here the content: $message");
+    die("Error queuing mail. Here the content, please read it, as if it were an email: $message");
     
     }
     
@@ -98,7 +99,8 @@
     if (preg_match("/^[\w.+-]{1,64}\@[\w.-]{1,255}\.[a-z]{2,6}$/",$mailaddress)){ 
     return true;
     } else {
-    return false;
+    header("Location: " . EXTERNAL_ADDRESS . "/generic_errors/invalid_emailaddress.html");
+	die();
     }
     
     }
@@ -108,7 +110,7 @@
     #Adds a new user to the database
     function add_user($mailaddress){
     $link=open_db();
-    $sql="INSERT INTO User (email_address ) VALUE ('$mailaddress')";
+    $sql="INSERT INTO Yane (email_address ) VALUE ('$mailaddress')";
     mysql_query($sql) OR die("Couldn't add new user to database. Error: " . mysql_error());
     mysql_close($link);
     }
@@ -119,22 +121,22 @@
     function update_pw($mailaddress, $plain_pw){
     $pw_md5 = md5($plain_pw);
     $link=open_db();
-    $sql="UPDATE User SET md5_password = '$pw_md5' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
+    $sql="UPDATE Yane SET md5_password = '$pw_md5' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
     mysql_query($sql) OR die("Couldn't update password. Error: " . mysql_error());
     mysql_close($link);
     }
     
     #-------------------------------------------------------------------------------------------------------------------------
     
-    #Logs the IP of the user and sets login_failures to 0
+    #Logs the IP of the user, sets login_failures to 0 and and sets the login time
     function log_correct_login($mailaddress, $ip){
     $link=open_db();
-    $sql="UPDATE User SET last_login_ip = '$ip' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
+    $sql="UPDATE Yane SET last_login_ip = '$ip' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
     mysql_query($sql) OR die("Couldn't save last login IP. Error: " . mysql_error());
-    $sql="UPDATE User SET login_failures = '0' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
+    $sql="UPDATE Yane SET login_failures = '0' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
     mysql_query($sql) OR die("Couldn't reset login failures. Error: " . mysql_error());
     $time=date('Y-m-d H:i:s');
-    $sql="UPDATE User SET last_login = '$time' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
+    $sql="UPDATE Yane SET last_login = '$time' WHERE CONVERT( email_address USING utf8 ) = '$mailaddress'";
     mysql_query($sql) OR die("Couldn't update login timestamp. Error: " . mysql_error());
     mysql_close($link);
     }

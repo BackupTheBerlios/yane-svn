@@ -1,0 +1,35 @@
+Registrierung:
+
+Mailadresse und zweimal das PW abfragen
+
+Auf bereits angemeldete Adresse prüfen 
+--> Falls angemeldet und aktiviert: die()
+--> Falls angemeldet und nicht aktiviert: Aktivierungscode neu senden
+
+--> Wenn die PWs nicht übereinstimmen, dann nochmal von vorne
+--> Wenn die PWs übereinstimmen, dann kommen die Datenbankeinträge:
+
+Mailadresse speichern
+
+Passwort als MD5 speichern
+
+Ändern der Daten loggen
+
+Korrekten Login loggen
+
+Aktivierungskey erzeugen, speichern und zumailen.
+
+Registrierung beendet.
+
+
+Aktivierung:
+
+Überprüfung des Keys auf ein gültiges Format
+--> Falls ungültig, Weiterleitung auf Fehlerseite
+--> Falls gültig, weiter.
+
+Abgleich, ob Key in der Datenbank
+--> Falls nein, Weiterleitung auf Fehlerseite
+--> Falls ja, wird der Key geNULLt und eine eMail an den Besitzer verschickt
+--> Die Aktivierung wird als korrekter Login gewertet und dementsprechend geloggt
+--> Die Modifikationszeit des Nutzers wird auf den jetzigen Zeitpunkt gesetzt.

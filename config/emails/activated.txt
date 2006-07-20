@@ -2,7 +2,7 @@ Your account has been activated
 Thank you for activating your YaCy newsletter account.
 You now can login with the login-data supplied in the earlier mail.
 
-Up to now, you *have not* been subscribed to any list, please go to http://newsletters.yacy-forum.de/manage/subscriptions now and choose the newsletters you want to receive in the future.
+Up to now, you *have not* been subscribed to any list, please go to %base_url%/manage/subscriptions now and choose the newsletters you want to receive in the future.
 
 Kind regards,
 the YaCy newsletter team

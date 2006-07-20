@@ -38,7 +38,7 @@
     #Which lists are selected?
     
     #security list?
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND security_list = 1 AND md5_password = '$password';");
+    $result = mysql_query("SELECT * FROM Yane WHERE email_address = '$mailaddress' AND security_list = 1 AND md5_password = '$password';");
     if(mysql_num_rows($result) > 0) {
         $seclist = true;
     } else {
@@ -46,7 +46,7 @@
     }
     
     #announce list?
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND announce_list = 1 AND md5_password = '$password';");
+    $result = mysql_query("SELECT * FROM Yane WHERE email_address = '$mailaddress' AND announce_list = 1 AND md5_password = '$password';");
     if(mysql_num_rows($result) > 0) {
         $ann_list = true;
     } else {
@@ -54,7 +54,7 @@
     }
     
     # newsletter list?
-    $result = mysql_query("SELECT * FROM User WHERE email_address = '$mailaddress' AND newsletter_list = 1 AND md5_password = '$password';");
+    $result = mysql_query("SELECT * FROM Yane WHERE email_address = '$mailaddress' AND newsletter_list = 1 AND md5_password = '$password';");
     if(mysql_num_rows($result) > 0) {
         $nl_list = true;
     } else {
